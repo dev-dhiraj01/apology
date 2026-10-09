@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2a1b3d">
+<title>I'm Sorry</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#2a1b3d; --bg2:#46284f; --ink:#fff3e6; --honey:#f2b45a;
+  --fur:#b97b4a; --fur2:#d49a68; --blush:#f7a8b8; --soft:#cdb8e0;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px); }
+body {
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:Fraunces,Georgia,serif; line-height:1.7; overflow-x:hidden;
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(139,83,157,.24),transparent 45%),
+    radial-gradient(ellipse at 85% 75%,rgba(242,180,90,.12),transparent 40%),
+    var(--bg);
+  background-attachment:fixed;
+}
+canvas#fx { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+section {
+  position:relative; z-index:2; min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; padding:64px 22px; text-align:center;
+  background:linear-gradient(180deg,transparent,rgba(70,40,79,.28),transparent);
+  isolation:isolate;
+}
+h1 {
+  font-family:Caveat,cursive; font-size:clamp(3.4rem,12vw,7.5rem); line-height:1;
+  margin:.1em 0; font-weight:700; color:var(--honey);
+  text-shadow:0 0 30px rgba(242,180,90,.45);
+}
+h2 { font-family:Caveat,cursive; font-size:clamp(2.2rem,6vw,3.4rem); margin:0 0 .4em; color:var(--blush); font-weight:700; }
+p { max-width:34em; margin:.6em auto; }
+.sub { color:var(--soft); font-style:italic; }
+.sign {
+  background:#fff3e6; color:#5a3a2a; border-radius:12px; padding:10px 20px;
+  font-family:Caveat,cursive; font-size:1.7rem;
+  box-shadow:0 12px 25px rgba(0,0,0,.25),0 0 22px rgba(242,180,90,.10);
+  transform-origin:top center; animation:signSway 4s ease-in-out infinite; margin-bottom:-6px;
+}
+@keyframes signSway { 0%,100%{transform:rotate(-2deg) translateY(0)} 50%{transform:rotate(2deg) translateY(-3px)} }
+.bear {
+  width:min(260px,62vw); height:auto; overflow:visible;
+  filter:drop-shadow(0 14px 18px rgba(0,0,0,.4));
+  animation:bearFloat 4.5s ease-in-out infinite; will-change:transform;
+}
+@keyframes bearFloat {
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  35%{transform:translateY(-5px) rotate(-1deg)}
+  70%{transform:translateY(-2px) rotate(1deg)}
+}
+.bear .body { animation:naturalBreathing 3.5s ease-in-out infinite; transform-origin:50% 100%; transform-box:fill-box; }
+@keyframes naturalBreathing { 0%,100%{transform:scale(1,1)} 50%{transform:scale(1.025,.985)} }
+.bear .eye { animation:blink 4.5s infinite; transform-origin:center; transform-box:fill-box; }
+@keyframes blink { 0%,94%,100%{transform:scaleY(1)} 97%{transform:scaleY(.1)} }
+.bear .tear { animation:tear 2.4s ease-in infinite; opacity:0; }
+.bear .tear.b { animation-delay:1.2s; }
+@keyframes tear { 0%{opacity:0;transform:translateY(0)} 15%{opacity:.95} 100%{opacity:0;transform:translateY(46px)} }
+.bear .wave { animation:gentleWave 1.8s ease-in-out infinite; transform-origin:20% 90%; transform-box:fill-box; }
+@keyframes gentleWave { 0%,100%{transform:rotate(8deg)} 50%{transform:rotate(-24deg)} }
+.bear .head { animation:naturalHead 5s ease-in-out infinite; transform-origin:50% 90%; transform-box:fill-box; }
+@keyframes naturalHead { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-2deg)} 55%{transform:rotate(1.5deg)} 75%{transform:rotate(-.5deg)} }
+.bear .heart { animation:beat 1s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
+@keyframes beat { 50%{transform:scale(1.25)} }
+.row { display:flex; gap:clamp(10px,4vw,48px); align-items:flex-end; justify-content:center; flex-wrap:wrap; }
+.row .bear { width:min(170px,40vw); }
+.letter {
+  background:rgba(255,243,230,.07); border:1px solid rgba(247,168,184,.35);
+  border-radius:18px; padding:28px clamp(18px,4vw,44px); max-width:640px;
+  min-height:300px; width:min(100%,640px); text-align:left; backdrop-filter:blur(8px);
+  box-shadow:0 18px 50px rgba(0,0,0,.12);
+}
+.letter p { margin:.8em 0; font-size:1.1rem; }
+.caret::after { content:""; display:inline-block; width:2px; height:1.1em; background:var(--honey); margin-left:3px; vertical-align:-3px; animation:caretBlink 1s steps(1) infinite; }
+@keyframes caretBlink { 50%{opacity:0} }
+.promises { display:flex; flex-wrap:wrap; gap:18px; justify-content:center; max-width:900px; }
+.pr {
+  flex:1 1 220px; max-width:260px; padding:22px 18px; border-radius:22px;
+  background:rgba(255,243,230,.08); border:1px solid rgba(242,180,90,.3);
+  cursor:pointer; transition:transform .35s cubic-bezier(.2,.8,.2,1),background .35s,box-shadow .35s;
+}
+.pr:hover,.pr:focus-visible { transform:translateY(-8px) rotate(-1.5deg); background:rgba(242,180,90,.16); outline:none; box-shadow:0 15px 35px rgba(0,0,0,.15); }
+.pr:active { transform:scale(.97); }
+.pr .ic { font-size:2.4rem; display:block; animation:beat 1.6s infinite; }
+.pr b { font-family:Caveat,cursive; font-size:1.7rem; color:var(--honey); display:block; }
+.pr small { color:var(--soft); display:block; font-size:.95rem; }
+.btns { position:relative; height:190px; width:min(480px,92vw); margin-top:20px; overflow:visible; }
+button { font:inherit; font-family:Caveat,cursive; font-size:clamp(1.35rem,5vw,1.8rem); border:0; border-radius:999px; padding:.35em 1.1em; cursor:pointer; color:#3a2200; }
+#yes {
+  background:var(--honey); box-shadow:0 0 0 0 rgba(242,180,90,.7);
+  animation:pulse 1.8s infinite; position:absolute; left:2%; top:30px;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s;
+}
+#yes:hover { transform:scale(1.07); box-shadow:0 0 30px rgba(242,180,90,.38); }
+#yes:active { transform:scale(.96); }
+#no {
+  background:#4b3a60; color:var(--ink); position:absolute; left:62%; top:30px;
+  transition:left .32s cubic-bezier(.2,.8,.2,1),top .32s cubic-bezier(.2,.8,.2,1),transform .18s;
+  will-change:left,top; touch-action:manipulation;
+}
+#no:hover { box-shadow:0 8px 22px rgba(0,0,0,.22); }
+@keyframes pulse { 70%{box-shadow:0 0 0 22px rgba(242,180,90,0)} 100%{box-shadow:0 0 0 0 rgba(242,180,90,0)} }
+#win {
+  position:fixed; inset:0; z-index:40; background:rgba(42,27,61,.96);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transition:opacity .8s,visibility .8s;
+  padding:20px; text-align:center; overflow-y:auto;
+}
+#win.on { opacity:1; visibility:visible; }
+#win h1 { font-size:clamp(3.5rem,12vw,7rem); }
+.hint { position:absolute; bottom:20px; color:var(--soft); font-size:.95rem; animation:bob 2s infinite; }
+@keyframes bob { 50%{transform:translateY(8px)} }
+section.reveal-ready > * { opacity:0; transform:translateY(22px); transition:opacity .7s ease,transform .7s ease; }
+section.revealed > * { opacity:1; transform:translateY(0); }
+section.revealed .sign { animation:signSway 4s ease-in-out infinite; }
+section.revealed .bear { animation:bearFloat 4.5s ease-in-out infinite; }
+@media (max-width:520px) {
+  section { padding:58px 18px; }
+  .letter { padding:22px 18px; }
+  .row { gap:4px; }
+  .row .bear { width:min(135px,38vw); }
+  .btns { width:min(360px,94vw); height:180px; }
+  #yes { left:0; }
+  #no { left:62%; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; transition-duration:.01ms!important; }
+  section.reveal-ready > *,section.revealed > * { opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<section id="s1">
+  <div class="sign" id="sg">I'm sorry</div>
+  <div id="hb"></div>
+  <h1>I'm sorry.</h1>
+  <p class="sub">Little bear is crying, and it's all my fault.</p>
+  <span class="hint">scroll down ↓</span>
+</section>
+
+<section id="s2">
+  <h2>A letter for you</h2>
+  <div class="letter"><div id="lt" class="caret"></div></div>
+</section>
+
+<section id="s3">
+  <h2>What I promise</h2>
+  <p class="sub">Tap each one. The bears are counting.</p>
+  <div class="promises">
+    <div class="pr" tabindex="0" role="button" data-m="I'll listen first, and talk second."><span class="ic">👂</span><b>I'll listen</b><small>tap me</small></div>
+    <div class="pr" tabindex="0" role="button" data-m="I'll own my mistakes, with no excuses."><span class="ic">🤝</span><b>I'll own it</b><small>tap me</small></div>
+    <div class="pr" tabindex="0" role="button" data-m="I'll show up in the small moments too."><span class="ic">🧸</span><b>I'll show up</b><small>tap me</small></div>
+  </div>
+  <p id="pm" class="sub" style="min-height:2em;color:var(--honey)"></p>
+  <div class="row" id="rb"></div>
+</section>
+
+<section id="s4">
+  <h2>Will you forgive me?</h2>
+  <div id="fb"></div>
+  <div class="btns">
+    <button id="yes" type="button">Yes, I forgive you</button>
+    <button id="no" type="button">No</button>
+  </div>
+  <p class="sub" id="nt" style="min-height:1.6em"></p>
+</section>
+
+<div id="win" role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
+  <div class="row" id="wb"></div>
+  <h1 id="thanksTitle">Thank you!</h1>
+  <p>Hugs, and a promise to do better. Always yours. ❤️</p>
+  <button id="closeWin" type="button" style="margin-top:18px;background:var(--honey)">A big hug 🧸</button>
+</div>
+
+<script>
+function teddy(o) {
+  o=o||{};
+  var m=o.mood||'sad', c=o.color||'#b97b4a', c2=o.color2||'#d49a68', bow=o.bow||'#e0405f';
+  var eyes=m==='happy'
+    ? '<path d="M82 98q8-10 16 0M122 98q8-10 16 0" stroke="#2b1a10" stroke-width="5" fill="none" stroke-linecap="round"/>'
+    : '<g class="eye"><ellipse cx="90" cy="98" rx="6" ry="8" fill="#2b1a10"/><circle cx="92" cy="95" r="2" fill="#fff"/></g><g class="eye"><ellipse cx="130" cy="98" rx="6" ry="8" fill="#2b1a10"/><circle cx="132" cy="95" r="2" fill="#fff"/></g>';
+  var mouth=m==='happy'
+    ? '<path d="M100 124q10 12 20 0" stroke="#2b1a10" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    : '<path d="M100 128q10-9 20 0" stroke="#2b1a10" stroke-width="4" fill="none" stroke-linecap="round"/>';
+  var tears=m==='sad'
+    ? '<ellipse class="tear" cx="86" cy="110" rx="4" ry="6" fill="#8fd3ff"/><ellipse class="tear b" cx="134" cy="110" rx="4" ry="6" fill="#8fd3ff"/>'
+    : '';
+  var heart=m==='happy'
+    ? '<path class="heart" d="M110 196c-14-10-20-18-20-25a10 10 0 0 1 20-3 10 10 0 0 1 20 3c0 7-6 15-20 25z" fill="#ff5a7a"/>'
+    : '';
+  var arm=m==='happy'
+    ? '<g class="wave"><ellipse cx="176" cy="178" rx="17" ry="30" transform="rotate(-25 176 178)" fill="'+c+'"/></g>'
+    : '<ellipse cx="172" cy="190" rx="16" ry="30" transform="rotate(-8 172 190)" fill="'+c+'"/>';
+  return '<svg class="bear" viewBox="0 0 220 280" role="img" aria-label="'+(m==='happy'?'Happy':'Sad')+' teddy bear"><g class="body">'
+    +'<ellipse cx="75" cy="250" rx="28" ry="22" fill="'+c+'"/><ellipse cx="145" cy="250" rx="28" ry="22" fill="'+c+'"/>'
+    +'<ellipse cx="75" cy="252" rx="14" ry="11" fill="'+c2+'"/><ellipse cx="145" cy="252" rx="14" ry="11" fill="'+c2+'"/>'
+    +'<ellipse cx="110" cy="195" rx="58" ry="62" fill="'+c+'"/><ellipse cx="110" cy="205" rx="36" ry="42" fill="'+c2+'"/>'
+    +'<ellipse cx="46" cy="186" rx="16" ry="30" transform="rotate(8 46 186)" fill="'+c+'"/>'+arm+heart
+    +'<g class="head"><circle cx="52" cy="56" r="24" fill="'+c+'"/><circle cx="52" cy="56" r="12" fill="'+c2+'"/><circle cx="168" cy="56" r="24" fill="'+c+'"/><circle cx="168" cy="56" r="12" fill="'+c2+'"/>'
+    +'<ellipse cx="110" cy="100" rx="66" ry="58" fill="'+c+'"/><ellipse cx="110" cy="116" rx="30" ry="22" fill="'+c2+'"/>'
+    +eyes+'<ellipse cx="110" cy="109" rx="9" ry="6" fill="#2b1a10"/>'+mouth+tears
+    +'<path d="M90 154l20 8-20 8zM130 154l-20 8 20 8z" fill="'+bow+'"/><circle cx="110" cy="162" r="6" fill="'+bow+'"/></g></g></svg>';
+}
+var $=function(s){return document.querySelector(s);};
+$('#hb').innerHTML=teddy({mood:'sad'});
+$('#rb').innerHTML=teddy({mood:'sad',color:'#a86b3f',bow:'#4aa3df'})+teddy({mood:'happy',color:'#d9a066',color2:'#f0c796',bow:'#7bd88f'})+teddy({mood:'sad',color:'#c58d8d',color2:'#e6b9b9',bow:'#f2b45a'});
+$('#fb').innerHTML=teddy({mood:'sad'});
+$('#wb').innerHTML=teddy({mood:'happy'})+teddy({mood:'happy',color:'#d9a066',color2:'#f0c796',bow:'#7bd88f'})+teddy({mood:'happy',color:'#c58d8d',color2:'#e6b9b9',bow:'#f2b45a'});
+
+var lines=[
+  "I've been replaying what happened, and I keep landing on the same thing: I hurt you, and that was never what I wanted.",
+  "I'm not going to hide behind excuses. I made a mistake, and I'm sorry for the way it made you feel.",
+  "You matter to me far more than being right ever could.",
+  "If you give me the chance, I'll show you with what I do, not only with what I say."
+];
+var typed=false;
+function typeLetter() {
+  if(typed) return;
+  typed=true;
+  var box=$('#lt'), li=0, ci=0, p=document.createElement('p');
+  box.prepend(p);
+  function tick() {
+    if(li>=lines.length) { box.classList.remove('caret'); return; }
+    var line=lines[li];
+    if(ci<line.length) {
+      p.textContent=line.slice(0,++ci);
+      setTimeout(tick,22);
+    } else {
+      li++; ci=0;
+      if(li<lines.length) { p=document.createElement('p'); box.appendChild(p); }
+      setTimeout(tick,450);
+    }
+  }
+  tick();
+}
+if('IntersectionObserver' in window) {
+  var letterObserver=new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if(entry.isIntersecting) { typeLetter(); letterObserver.disconnect(); }
+    });
+  },{threshold:.25});
+  letterObserver.observe($('#s2'));
+} else { typeLetter(); }
+
+document.querySelectorAll('.pr').forEach(function(el) {
+  function activate() {
+    $('#pm').textContent=el.dataset.m;
+    var r=el.getBoundingClientRect();
+    burst(r.left+r.width/2,r.top+30,'💛',10);
+  }
+  el.addEventListener('click',activate);
+  el.addEventListener('keydown',function(e) {
+    if(e.key==='Enter'||e.key===' ') { e.preventDefault(); activate(); }
+  });
+});
+
+
+var no=$('#no');
+var notes=[
+  "Are you sure? 🥺","Wait, come back!","The bear is crying! 😭",
+  "Please? 💗","You almost caught me!","Too slow! 🏃",
+  "My little heart! 💔","The bear still believes in you!",
+  "Try catching me! 🧸","Pretty please? 🥹"
+];
+var ni=0, lastX=null, lastY=null, dodgeCount=0;
+var lastDirection=null;
+var lastDodgeTime=0;
+function run(e) {
+  if(e) e.preventDefault();
+  var box=no.parentElement, boxW=box.clientWidth, boxH=box.clientHeight;
+  var btnW=no.offsetWidth, btnH=no.offsetHeight;
+  var maxX=Math.max(0,boxW-btnW), maxY=Math.max(0,boxH-btnH);
+  var boxRect=box.getBoundingClientRect(), rect=no.getBoundingClientRect();
+  var currentX=lastX===null?rect.left-boxRect.left:lastX;
+  var currentY=lastY===null?rect.top-boxRect.top:lastY;
+  var stepX=Math.max(65,maxX*.48), stepY=Math.max(48,maxY*.62);
+  var directions=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[1,-1],[-1,1],[1,1]];
+
+  directions.sort(function(){return Math.random()-.5;});
+  var candidates=[];
+  directions.forEach(function(d) {
+    var x=Math.max(0,Math.min(maxX,currentX+d[0]*stepX));
+    var y=Math.max(0,Math.min(maxY,currentY+d[1]*stepY));
+    if(Math.hypot(x-currentX,y-currentY)<35) return;
+    if(lastX!==null&&Math.abs(x-lastX)<6&&Math.abs(y-lastY)<6) return;
+    candidates.push({x:x,y:y,d:d});
+  });
+  var choices=candidates.filter(function(c) {
+    return !lastDirection || c.d[0]!==lastDirection[0] || c.d[1]!==lastDirection[1];
+  });
+  if(!choices.length) choices=candidates;
+  var next=choices.length?choices[Math.floor(Math.random()*choices.length)]:{
+    x:Math.random()*maxX,y:Math.random()*maxY,d:[1,1]
+  };
+  lastX=next.x; lastY=next.y; lastDirection=next.d; dodgeCount++;
+  no.style.left=next.x+'px'; no.style.top=next.y+'px'; no.style.right='auto';
+  no.style.transform='rotate('+(Math.random()*12-6)+'deg) scale(1.02)';
+  $('#nt').textContent=notes[ni%notes.length]; ni++;
+  burst(boxRect.left+currentX+btnW/2,boxRect.top+currentY+btnH/2,'💗',5);
+}
+no.addEventListener('pointerenter',function(e) {
+  if(e.pointerType==='mouse') {
+    var now=Date.now();
+    if(now-lastDodgeTime>180) { lastDodgeTime=now; run(e); }
+  }
+});
+no.addEventListener('touchstart',function(e) { run(e); },{passive:false});
+no.addEventListener('click',function(e) { run(e); });
+
+$('#yes').addEventListener('click',function() {
+  $('#win').classList.add('on');
+  document.body.style.overflow='hidden';
+  document.querySelectorAll('#wb .bear').forEach(function(bear,index) {
+    bear.style.animation='bearFloat 1.1s ease-in-out infinite';
+    bear.style.animationDelay=(index*.16)+'s';
+  });
+  for(var i=0;i<9;i++) {
+    setTimeout(function() {
+      burst(30+Math.random()*(innerWidth-60),40+Math.random()*(innerHeight*.65),
+        ['❤️','💗','✨','💛'][Math.floor(Math.random()*4)],18);
+    },i*220);
+  }
+});
+function closeCelebration() {
+  $('#win').classList.remove('on');
+  document.body.style.overflow='';
+}
+$('#closeWin').addEventListener('click',closeCelebration);
+$('#win').addEventListener('click',function(e) {
+  if(e.target===$('#win')) closeCelebration();
+});
+document.addEventListener('keydown',function(e) {
+  if(e.key==='Escape'&&$('#win').classList.contains('on')) closeCelebration();
+});
+
+
+var sections=document.querySelectorAll('section');
+if('IntersectionObserver' in window) {
+  var revealObserver=new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:.12});
+  sections.forEach(function(section) {
+    section.classList.add('reveal-ready');
+    revealObserver.observe(section);
+  });
+} else {
+  sections.forEach(function(section){section.classList.add('revealed');});
+}
+
+
+var cv=$('#fx'),cx=cv.getContext('2d'),W=0,H=0,parts=[],stars=[],tk=0;
+var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function sizeCanvas() {
+  var d=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(innerWidth*d); cv.height=Math.round(innerHeight*d);
+  cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px';
+  cx.setTransform(d,0,0,d,0,0); W=innerWidth; H=innerHeight;
+}
+window.addEventListener('resize',sizeCanvas); sizeCanvas();
+for(var si=0;si<80;si++) stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+.3,t:Math.random()*6});
+var E=['❤️','💗','🌸','✨','💛'];
+function spawn() {
+  parts.push({x:Math.random()*W,y:-20,vy:.6+Math.random()*1.2,vx:(Math.random()-.5)*.35,s:14+Math.random()*16,a:Math.random()*6,e:E[Math.random()*E.length|0],life:1000,g:0,drift:true});
+}
+function burst(x,y,e,n) {
+  if(reducedMotion) return;
+  for(var i=0;i<n;i++) {
+    var a=Math.random()*Math.PI*2,v=2+Math.random()*5;
+    parts.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-3,s:16+Math.random()*14,a:Math.random()*6,e:e,life:90,g:.12,drift:false});
+  }
+}
+var mx=-1000,my=-1000,lastTrail=0;
+window.addEventListener('pointermove',function(e) {
+  mx=e.clientX; my=e.clientY;
+  var now=Date.now();
+  if(!reducedMotion&&now-lastTrail>70&&Math.random()<.35) {
+    lastTrail=now;
+    parts.push({x:mx,y:my,vx:(Math.random()-.5)*1.5,vy:-.5-Math.random(),s:10+Math.random()*8,a:0,e:'💗',life:36,g:0,drift:false});
+  }
+});
+var lastFrame=0;
+function loop(t) {
+  requestAnimationFrame(loop);
+  if(reducedMotion&&t-lastFrame<100) return;
+  lastFrame=t;
+  cx.clearRect(0,0,W,H);
+  if(!reducedMotion) {
+    stars.forEach(function(s) {
+      cx.globalAlpha=.35+.65*Math.abs(Math.sin(t/900+s.t));
+      cx.fillStyle='#fff3e6'; cx.beginPath(); cx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2); cx.fill();
+    });
+    cx.globalAlpha=1;
+    if(++tk%32===0&&parts.length<100) spawn();
+    for(var i=parts.length-1;i>=0;i--) {
+      var p=parts[i];
+      p.x+=p.vx+(p.drift?Math.sin(t/700+p.a)*.45:0);
+      p.y+=p.vy;
+      if(p.g) p.vy+=p.g;
+      p.life--;
+      cx.globalAlpha=Math.max(0,Math.min(1,p.life/30));
+      cx.font=p.s+'px serif'; cx.fillText(p.e,p.x,p.y);
+      if(p.y>H+35||p.y<-100||p.life<=0) parts.splice(i,1);
+    }
+    cx.globalAlpha=1;
+  }
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
